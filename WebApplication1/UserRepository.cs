@@ -15,6 +15,10 @@ namespace WebApplication1
         {
             return _context.Users.ToList();
         }
+        public User GetBy(string email)
+        {
+            return _context.Users.FirstOrDefault(x => x.Email == email);
+        }
 
         public void Add(User user)
         {

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WebApplication1;
 
 namespace WebApplication1.Controllers
@@ -19,7 +20,12 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<User>> Get()
         {
-            return Ok(_userRepository.GetAll());
+            var email = User.FindFirstValue(ClaimTypes.Email);
+            if(string.IsNullOrEmpty(email))
+            {
+                return Unauthorized();
+            }
+            return Ok(_userRepository.GetBy(email));
         }
 
         [HttpPost]
